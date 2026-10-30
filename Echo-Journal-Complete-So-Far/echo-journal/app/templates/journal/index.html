@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Your journal - Echo Journal{% endblock %}
+{% block content %}
+<div class="page-head">
+  <h1>Your journal</h1>
+  <a class="button" href="{{ url_for('journal.new') }}">New entry</a>
+</div>
+
+<form class="search" method="get" action="{{ url_for('journal.index') }}" role="search">
+  <label class="visually-hidden" for="q">Search your entries</label>
+  <input id="q" name="q" type="search" value="{{ q }}" maxlength="100" placeholder="Search your entries">
+  <button type="submit" class="secondary">Search</button>
+</form>
+
+{% if entries %}
+  {% if q %}<p class="hint">{{ total }} {{ 'entry matches' if total == 1 else 'entries match' }} "{{ q }}".</p>{% endif %}
+  <ul class="entries">
+    {% for entry in entries %}
+    <li>
+      <a class="entry-link" href="{{ url_for('journal.view', entry_id=entry.id) }}">
+        <span class="when">{{ entry.created_at|as_time }}</span>
+        <span class="what">
+          <span class="title">{{ entry.title or 'Untitled' }}</span>
+          <span class="excerpt">{{ entry.preview|excerpt }}</span>
+        </span>
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+  {% if page_count > 1 %}
+  <nav class="pager" aria-label="Pages">
+    {% if page > 1 %}<a href="{{ url_for('journal.index', q=q or None, page=page - 1) }}">Newer entries</a>{% else %}<span></span>{% endif %}
+    <span>Page {{ page }} of {{ page_count }}</span>
+    {% if page < page_count %}<a href="{{ url_for('journal.index', q=q or None, page=page + 1) }}">Older entries</a>{% else %}<span></span>{% endif %}
+  </nav>
+  {% endif %}
+{% elif q %}
+  <p class="empty">No entries match "{{ q }}". <a href="{{ url_for('journal.index') }}">Show all entries</a></p>
+{% else %}
+  <div class="empty">
+    <p>Nothing here yet. Your first entry can be a single sentence.</p>
+    <p><a class="button" href="{{ url_for('journal.new') }}">Write your first entry</a></p>
+  </div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}About and privacy - Echo Journal{% endblock %}
+{% block content %}
+<h1>About and privacy</h1>
+
+<h2>What Echo Journal is</h2>
+<p>A private place to write. It is a tool for self-reflection, not a medical service: it can't diagnose anything and it is no substitute for a doctor, therapist or counsellor. If you are struggling or in crisis, contact your local emergency number or a crisis line, or talk to someone you trust.</p>
+
+<h2>What is stored</h2>
+<ul>
+  <li>Your username and a scrambled (hashed) version of your password. The password itself is never stored.</li>
+  <li>Your entries, with the time each was written and last edited.</li>
+  <li>The time you last signed in.</li>
+</ul>
+<p>There is no email address, and this site uses no ads, analytics or scripts from other companies.</p>
+
+<h2>Who can see your entries</h2>
+<p>Entries are shown only to you, while you are signed in. Other accounts can't open them. Whoever runs this site also controls the database it is kept in, so only write what you are comfortable with that person being able to reach.</p>
+
+<h2>Your data, your call</h2>
+<p>On the <a href="{{ url_for('account.index') }}">account page</a> you can download all your entries and delete your account. Deleting your account permanently removes every entry.</p>
+
+<h2>Not available yet</h2>
+<p>There is no password reset, because there is no email address to send it to. If you forget your password the account can't be recovered.</p>
+{% endblock %}

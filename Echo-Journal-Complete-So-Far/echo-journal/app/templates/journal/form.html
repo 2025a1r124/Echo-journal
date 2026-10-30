@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}{{ heading }} - Echo Journal{% endblock %}
+{% block content %}
+<h1>{{ heading }}</h1>
+<form method="post">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+  <label for="title">Title <span class="optional">(optional)</span></label>
+  <input id="title" name="title" type="text" value="{{ values.title }}" maxlength="{{ config.TITLE_MAX_CHARS }}"{% if errors.title %} aria-invalid="true" aria-describedby="title-note"{% endif %}>
+  {% if errors.title %}<p class="error" id="title-note">{{ errors.title }}</p>{% endif %}
+
+  <label for="body">What's on your mind?</label>
+  <textarea id="body" name="body" class="paper" rows="14" required maxlength="{{ config.ENTRY_MAX_CHARS }}"{% if errors.body %} aria-invalid="true" aria-describedby="body-note"{% endif %}>{{ values.body }}</textarea>
+  {% if errors.body %}<p class="error" id="body-note" role="alert">{{ errors.body }}</p>{% endif %}
+
+  <p class="actions">
+    <button type="submit">Save entry</button>
+    <a class="button secondary" href="{{ cancel_url }}">Cancel</a>
+  </p>
+</form>
+{% endblock %}

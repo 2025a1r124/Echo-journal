@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Delete entry - Echo Journal{% endblock %}
+{% block content %}
+<h1>Delete this entry?</h1>
+<p>"{{ entry.title or 'Untitled entry' }}" will be removed for good. This can't be undone.</p>
+<form method="post" class="actions">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <button type="submit" class="danger">Delete entry</button>
+  <a class="button secondary" href="{{ url_for('journal.view', entry_id=entry.id) }}">Keep entry</a>
+</form>
+{% endblock %}

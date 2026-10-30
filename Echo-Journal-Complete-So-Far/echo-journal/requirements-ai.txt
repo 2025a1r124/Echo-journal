@@ -1,0 +1,4 @@
+# Optional Milestone 2 dependencies. Install only after the base app works.
+# PyTorch is large; select the wheel appropriate for your OS/Python from pytorch.org.
+transformers>=4.44,<5
+torch>=2.4

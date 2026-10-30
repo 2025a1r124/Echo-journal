@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}{{ entry.title or 'Untitled entry' }} - Echo Journal{% endblock %}
+{% block content %}
+<article>
+  <h1>{{ entry.title or 'Untitled entry' }}</h1>
+  <p class="meta">Written {{ entry.created_at|as_time }}</p>
+  {% if entry.updated_at != entry.created_at %}<p class="meta">Last edited {{ entry.updated_at|as_time }}</p>{% endif %}
+  <div class="entry-body">{{ entry.body }}</div>
+</article>
+<section class="analysis-panel" aria-labelledby="analysis-heading">
+  <h2 id="analysis-heading">AI reflection</h2>
+  <p class="hint">Optional, on-demand analysis. Models run locally after download; your journal text is not sent to an AI API.</p>
+  <form method="post" action="{{ url_for('journal.analyze', entry_id=entry.id) }}">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <button type="submit">{% if entry.analysis %}Analyze again{% else %}Analyze sentiment and emotion{% endif %}</button>
+  </form>
+  {% if entry.analysis %}
+    <div class="analysis-results">
+      <p><strong>Sentiment:</strong> {{ entry.analysis.sentiment|title }} <span class="meta">({{ (entry.analysis.sentiment_score * 100)|round|int }}% model score)</span></p>
+      <p><strong>Top emotion:</strong> {{ entry.analysis.emotion|title }} <span class="meta">({{ (entry.analysis.emotion_score * 100)|round|int }}% model score)</span></p>
+      {% if entry.analysis.emotion_scores %}
+        <p><strong>Other emotion estimates:</strong>
+        {% for item in entry.analysis.emotion_scores %}{{ item.label|title }} ({{ (item.score * 100)|round|int }}%){% if not loop.last %}, {% endif %}{% endfor %}
+        </p>
+      {% endif %}
+      <p class="hint">{{ entry.analysis.note }}</p>
+      <p class="meta">Last analyzed {{ entry.analyzed_at|as_time }} · Models: {{ entry.analysis.model }}</p>
+    </div>
+  {% endif %}
+</section>
+<p class="actions">
+  <a class="button" href="{{ url_for('journal.edit', entry_id=entry.id) }}">Edit entry</a>
+  <a class="button secondary" href="{{ url_for('journal.index') }}">Back to journal</a>
+  <a class="button danger" href="{{ url_for('journal.delete', entry_id=entry.id) }}">Delete entry</a>
+</p>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Your account - Echo Journal{% endblock %}
+{% block content %}
+<h1>Your account</h1>
+<dl class="facts">
+  <dt>Username</dt><dd>{{ g.user.username }}</dd>
+  <dt>Member since</dt><dd>{{ g.user.created_at|as_time('date') }}</dd>
+  <dt>Entries</dt><dd>{{ entry_count }}</dd>
+</dl>
+
+<h2>Download your journal</h2>
+<p>Get every entry in a file you keep.</p>
+<p class="actions">
+  <a class="button secondary" href="{{ url_for('journal.export_json') }}">Download as JSON</a>
+  <a class="button secondary" href="{{ url_for('journal.export_markdown') }}">Download as Markdown</a>
+</p>
+
+<section class="danger-zone">
+  <h2>Delete your account</h2>
+  <p>This permanently deletes your account and every entry in it. It can't be undone and nothing can be recovered afterwards. Download your journal first if you want a copy.</p>
+  <form method="post" action="{{ url_for('account.delete') }}">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+    <label for="password">Your password</label>
+    <input id="password" name="password" type="password" autocomplete="current-password" required maxlength="128"{% if errors.password %} aria-invalid="true" aria-describedby="password-note"{% endif %}>
+    {% if errors.password %}<p class="error" id="password-note">{{ errors.password }}</p>{% endif %}
+
+    <label for="confirm">Type DELETE to confirm</label>
+    <input id="confirm" name="confirm" type="text" autocomplete="off" autocapitalize="characters" spellcheck="false" required maxlength="10"{% if errors.confirm %} aria-invalid="true" aria-describedby="confirm-note"{% endif %}>
+    {% if errors.confirm %}<p class="error" id="confirm-note">{{ errors.confirm }}</p>{% endif %}
+
+    <p class="actions"><button type="submit" class="danger">Delete my account</button></p>
+  </form>
+</section>
+{% endblock %}

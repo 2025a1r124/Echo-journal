@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Echo Journal{% endblock %}
+{% block content %}
+<section class="intro">
+  <h1>A quiet place to write things down.</h1>
+  <p class="lede">Echo Journal keeps your entries private to your account. Write when you want to, search what you wrote before, and download everything whenever you like.</p>
+  <p class="actions">
+    <a class="button" href="{{ url_for('auth.register') }}">Create an account</a>
+    <a class="button secondary" href="{{ url_for('auth.login') }}">Sign in</a>
+  </p>
+</section>
+{% endblock %}

@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block title %}{{ heading }} - Echo Journal{% endblock %}
+{% block content %}
+<h1>{{ heading }}</h1>
+<p>{{ message }}</p>
+<p><a href="{{ url_for('pages.home') }}">Go to the start page</a></p>
+<p class="hint">Error {{ code }}</p>
+{% endblock %}
